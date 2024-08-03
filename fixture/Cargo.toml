@@ -1,0 +1,14 @@
+[package]
+name = "kurtbuilds_fixture"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "fixture"
+
+[dependencies]
+kurtbuilds_fixture_derive = { path = "../fixture_derive" }
+
+
+[dev-dependencies]
+pretty_assertions = "1.4.0"
