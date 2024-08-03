@@ -2,6 +2,8 @@
 name = "kurtbuilds_fixture"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "A library for creating fixtures for testing"
 
 [lib]
 name = "fixture"

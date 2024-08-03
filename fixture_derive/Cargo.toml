@@ -2,6 +2,8 @@
 name = "kurtbuilds_fixture_derive"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "A library for deriving implementations for the fixture crate"
 
 [lib]
 proc-macro = true
