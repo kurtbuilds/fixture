@@ -9,7 +9,7 @@ description = "A library for creating fixtures for testing"
 name = "fixture"
 
 [dependencies]
-kurtbuilds_fixture_derive = { path = "../fixture_derive" }
+kurtbuilds_fixture_derive = { version = "0.1.0", path = "../fixture_derive" }
 
 
 [dev-dependencies]
