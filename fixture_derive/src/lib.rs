@@ -42,10 +42,33 @@ pub fn derive(input: TokenStream) -> TokenStream {
             }
         }
     });
+    let debug_fields = fields.iter().map(|(name, ty)| {
+        match ty {
+            FieldType::Type(_) => {
+                quote! {
+                    .field(stringify!(#name), &self.#name)
+                }
+            }
+            FieldType::StaticStr => {
+                quote! {
+                    .field(stringify!(#name), &if self.#name.is_empty() { Option::<&str>::None } else { Some(self.#name) })
+                }
+            }
+        }
+    });
+
     let struct_code = quote! {
-        #[derive(Debug, Default)]
+        #[derive(Default)]
         #vis struct #fixture_ident {
             #(#struct_fields),*
+        }
+
+        impl ::core::fmt::Debug for #fixture_ident {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.debug_struct(stringify!(#ident))
+                    #(#debug_fields)*
+                    .finish()
+            }
         }
     };
 
