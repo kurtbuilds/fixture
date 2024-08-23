@@ -10,7 +10,7 @@ checksum = "56254986775e3233ffa9c4d7d3faaf6d36a2c09d30b20687e9f88bc8bafc16c8"
 
 [[package]]
 name = "kurtbuilds_fixture"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "kurtbuilds_fixture_derive",
  "pretty_assertions",
@@ -18,7 +18,7 @@ dependencies = [
 
 [[package]]
 name = "kurtbuilds_fixture_derive"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "proc-macro2",
  "quote",

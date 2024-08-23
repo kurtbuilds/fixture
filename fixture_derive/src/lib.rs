@@ -5,6 +5,7 @@ use syn::{parse_macro_input, DeriveInput, Data};
 enum FieldType {
     Type(syn::Type),
     StaticStr,
+    StaticFloat,
 }
 
 #[proc_macro_derive(Fixture)]
@@ -20,8 +21,11 @@ pub fn derive(input: TokenStream) -> TokenStream {
     let fields = d.fields.into_iter().map(|f| {
         let field_name = f.ident.unwrap();
         let ty = f.ty;
-        if ty.to_token_stream().to_string() == "Option < String >" {
+        let tt = ty.to_token_stream().to_string();
+        if tt == "Option < String >" {
             (field_name, FieldType::StaticStr)
+        } else if tt == "Option < f64 >" {
+            (field_name, FieldType::StaticFloat)
         } else {
             (field_name, FieldType::Type(ty))
         }
@@ -40,6 +44,11 @@ pub fn derive(input: TokenStream) -> TokenStream {
                     pub #field_name: &'static str
                 }
             }
+            FieldType::StaticFloat => {
+                quote! {
+                    pub #field_name: f64
+                }
+            }
         }
     });
     let debug_fields = fields.iter().map(|(name, ty)| {
@@ -52,6 +61,11 @@ pub fn derive(input: TokenStream) -> TokenStream {
             FieldType::StaticStr => {
                 quote! {
                     .field(stringify!(#name), &if self.#name.is_empty() { Option::<&str>::None } else { Some(self.#name) })
+                }
+            }
+            FieldType::StaticFloat => {
+                quote! {
+                    .field(stringify!(#name), &if self.#name == 0.0 { Option::<f64>::None } else { Some(self.#name) })
                 }
             }
         }
@@ -82,6 +96,11 @@ pub fn derive(input: TokenStream) -> TokenStream {
             FieldType::StaticStr => {
                 quote! {
                     self.#name.as_deref().unwrap_or_default() == other.#name
+                }
+            }
+            FieldType::StaticFloat => {
+                quote! {
+                    self.#name.as_ref().map(|&v| v == other.#name).unwrap_or(false)
                 }
             }
         }
