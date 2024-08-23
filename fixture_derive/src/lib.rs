@@ -100,7 +100,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
             }
             FieldType::StaticFloat => {
                 quote! {
-                    self.#name.as_ref().map(|&v| v == other.#name).unwrap_or(false)
+                    self.#name.unwrap_or(0.0) == other.#name
                 }
             }
         }
